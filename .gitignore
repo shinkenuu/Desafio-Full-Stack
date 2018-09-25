@@ -1,0 +1,12 @@
+# Pycharm
+**/.idea/**
+
+# Python
+**/__pycache__/**
+*.pyc
+
+# Database
+*.sqlite3
+
+# Environment Vars
+*.env
