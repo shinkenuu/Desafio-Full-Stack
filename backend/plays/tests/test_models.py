@@ -1,24 +1,16 @@
 from django.db.utils import IntegrityError
 from django.test.testcases import TestCase
 
-from ..models import Attendee, Play, Reservation
+from ..models import Play, Reservation
 from ..settings import PLAY_FEE_PERCENT, PLAY_PRICE, PLAY_TOTAL_ACCENTS
 
 from .factories import AttendeeFactory, PlayFactory, ReservationFactory
 
 
-class AttendeeTestCase(TestCase):
-    def test_persistence(self):
-        attendee = AttendeeFactory()
-        persisted_attendee = Attendee.objects.get(id=attendee.id)
-
-        self.assertEqual(attendee.user.id, persisted_attendee.user.id)
-
-
 class PlayTestCase(TestCase):
     def test_persistence(self):
         play = PlayFactory()
-        persisted_play = Play.objects.get(id=play.id)
+        persisted_play = Play.objects.get(uuid=play.uuid)
 
         self.assertEqual(persisted_play.name, play.name)
         self.assertEqual(persisted_play.fee, PLAY_FEE_PERCENT)
@@ -60,11 +52,11 @@ class PlayTestCase(TestCase):
 
         # Decreasing revenue
 
-        Reservation.objects.get(id=first_reservation.id).delete()
+        Reservation.objects.get(uuid=first_reservation.uuid).delete()
         expected_revenue = price
         self.assertEqual(play.revenue, expected_revenue)
 
-        Reservation.objects.get(id=second_reservation.id).delete()
+        Reservation.objects.get(uuid=second_reservation.uuid).delete()
         expected_revenue = 0.
         self.assertEqual(play.revenue, expected_revenue)
 
@@ -88,11 +80,11 @@ class PlayTestCase(TestCase):
 
         # Decreasing revenue
 
-        Reservation.objects.get(id=first_reservation.id).delete()
+        Reservation.objects.get(uuid=first_reservation.uuid).delete()
         expected_total_fee = price * fee
         self.assertEqual(play.total_fee, expected_total_fee)
 
-        Reservation.objects.get(id=second_reservation.id).delete()
+        Reservation.objects.get(uuid=second_reservation.uuid).delete()
         expected_total_fee = 0.
         self.assertEqual(play.total_fee, expected_total_fee)
 
@@ -100,10 +92,10 @@ class PlayTestCase(TestCase):
 class ReservationTestCase(TestCase):
     def test_persistence(self):
         reservation = ReservationFactory()
-        persisted_reservation = Reservation.objects.get(id=reservation.id)
+        persisted_reservation = Reservation.objects.get(uuid=reservation.uuid)
 
-        self.assertEqual(reservation.attendee.id, persisted_reservation.attendee.id)
-        self.assertEqual(reservation.play.id, persisted_reservation.play.id)
+        self.assertEqual(reservation.attendee.uuid, persisted_reservation.attendee.uuid)
+        self.assertEqual(reservation.play.uuid, persisted_reservation.play.uuid)
 
     def test_attendee_cant_have_more_than_one_reservation_for_the_same_play(self):
         attendee = AttendeeFactory()
