@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Attendee, Play, Reservation
+from .models import Play, Reservation
 
-admin.register(Attendee)
+
 admin.register(Play)
 admin.register(Reservation)
