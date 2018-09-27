@@ -1,11 +1,26 @@
 from django.urls import path
 
-from .views import AccentDetailView, AccentListView, PlayDetailView, PlayListView
+from .views import (
+    AttendeeDetailView, AttendeeListView, PlayDetailView, PlayListView, ReservationDetailView, ReservationListView
+)
 
 
 urlpatterns = [
-    path('plays/', PlayListView.as_view(), name='play-list'),
-    path('plays/<int:play_id>/', PlayDetailView.as_view(), name='play-detail'),
-    path('plays/<int:play_id>/accents/', AccentListView.as_view(), name='accent-list'),
-    path('plays/<int:play_id>/accents/<int:accent_id>', AccentDetailView.as_view(), name='accent-detail'),
+    path('attendees/', AttendeeListView.as_view(),
+         name='user-list'),
+
+    path('attendees/<uuid:pk>/', AttendeeDetailView.as_view(),
+         name='user-detail'),
+
+    path('plays/', PlayListView.as_view(),
+         name='play-list'),
+
+    path('plays/<uuid:pk>/', PlayDetailView.as_view(),
+         name='play-detail'),
+
+    path('reservations/', ReservationListView.as_view(),
+         name='reservation-list'),
+
+    path('reservations/<uuid:pk>/', ReservationDetailView.as_view(),
+         name='reservation-detail'),
 ]
